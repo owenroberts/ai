@@ -36,7 +36,7 @@ function predict(data) {
 	function accept() {
 		if (comp.value) {
 			const punc = Math.random() > 0.5 ? ' ' : '. ';
-			user.value = comp.value + punc;
+			user.value = comp.value + '.';
 			instructions.style.opacity = 0;
 		}
 		comp.value = '';
@@ -66,6 +66,8 @@ function predict(data) {
 		if (text.match(/[a-zA-Z]+\s$/g) && Math.random() > 0.5) {
 			comp.value = text + randomWord();
 			instructions.style.opacity = 1;
+
+			comp.value = "I farted";
 		} 
 
 		// ending after one letter
@@ -80,7 +82,11 @@ function predict(data) {
 		}
 
 
+		
 		user.value = text;
+
+		// console.log(user.value, comp.value)
+		// if (user.value == '') comp.value = '';
 	});
 
 	/* swipe to accept */
