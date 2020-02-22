@@ -79,11 +79,17 @@ textarea:focus {
 	transition: opacity 100ms ease-in;
 }
 
+#tab-btn {
+	margin-top: 1em;
+}
+
 #swipe-right {
 	display: none;
 	margin-bottom: 1em;
 	font-size: 16px;
 }
+
+#swipe { color: white; }
 
 @media (max-width: 375px) {
 	#container {
@@ -93,7 +99,7 @@ textarea:focus {
 
 	#type-area {
 		position: relative;
-		height: 400px;
+		height: 300px;
 	}
 
 	textarea {

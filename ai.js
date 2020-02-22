@@ -11,10 +11,12 @@ function predict(data) {
 		return data.words[Math.floor(Math.random() * data.words.length)];
 	}
 
-	function randomEnding(letter) {
-		letter = letter.toLowerCase();
-		const ending = data.endings[letter][Math.floor(Math.random() * data.endings[letter].length)];
-		return ending.substring(1, ending.length);
+	function randomEnding(str) {
+		const re = new RegExp('^' + str, "g");
+		const endings = data.endings[str[0].toLowerCase()]
+			.filter(ending => ending.match(re));
+		const ending = endings[Math.floor(Math.random() * endings.length)];
+		return ending ? ending.substring(str.length, ending.length) : '';
 	}
 
 	const user = document.getElementById('user');
@@ -54,24 +56,34 @@ function predict(data) {
 		let text = user.value;
 		const lastChar = text[text.length - 1];
 
-		// capitalize beginning of text and sentence, i
-		if (text.match(/(^[a-z]$)|(.+?[\.\?\!]\s+[a-z]$)/g)) {
-			text = text.substring(0, text.length - 1) + text[text.length - 1].toUpperCase();
-		}
+		// capitalize beginning of text
+		text = text.replace(/^[a-z]+$/g, txt => {
+			return txt[0].toUpperCase() + txt.substring(1);
+		});
+
+		// capitize new sentence 
+		text = text.replace(/[\.\?\!]\s*[a-z]+$/g, txt => {
+			const index = /[a-z]/i.exec(txt).index;
+			return txt.substring(0, index) + txt[index].toUpperCase() + txt.substring(index + 1);
+		});
 
 		// capitalize i 
 		text = text.replace(/\bi\s/g, 'I ');
 
 		// word after space
-		if (text.match(/[a-zA-Z]+\s$/g) && Math.random() > 0.5) {
+		if (text.match(/[a-zA-Z]+\s$/g) && Math.random() > 0.10) {
 			comp.value = text + randomWord();
 			instructions.style.opacity = 1;
 		} 
 
 		// ending after one letter
-		else  if (text.match(/\b[a-z]$/g) && Math.random() > 0.25) {
-			comp.value = text + randomEnding(text[text.length - 1]);
-			instructions.style.opacity = 1;
+		else if (text.match(/\b[a-z]+$/g)) {
+			const suggestion = randomEnding(text.match(/\b[a-z]+$/g)[0]);
+			if (suggestion) {
+				instructions.style.opacity = 1;
+				comp.value = text + suggestion;
+				if (Math.random() > 0.20) comp.value += ' ' + randomWord();
+			}
 		}
 
 		// no prediction 
@@ -84,8 +96,10 @@ function predict(data) {
 
 	/* swipe to accept */
 	if (mob) {
-		document.getElementById('swipe-right').style.display = 'block';
-		var startX, startY, startTime;
+		instructions.style.display = 'block';
+		button.addEventListener('touchstart', accept);
+
+		let startX, startY, startTime;
 		const swipeTime = 200;
 		const threshold = 50, restraint = 100;
 
