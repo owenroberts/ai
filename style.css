@@ -59,7 +59,6 @@ textarea {
 	border: 3px solid purple;
 	border-radius: 10px;
 	box-shadow: 0 0 0 2px pink;
-
 }
 
 #computer {
@@ -67,7 +66,7 @@ textarea {
 		rgba(255, 255, 255, 0.75), 
 		rgba(255, 255, 255, 0.75) ), 
 		url(circles.png);
-	background-size: 50%;
+	background-size: 100%;
 	color: gray;
 }
 
