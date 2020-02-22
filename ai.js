@@ -71,7 +71,7 @@ function predict(data) {
 		text = text.replace(/\bi\s/g, 'I ');
 
 		// word after space
-		if (text.match(/[a-zA-Z]+\s$/g) && Math.random() > 0.10) {
+		if (text.match(/[a-zA-Z]+\s$/g) && Math.random() > 0.40) {
 			comp.value = text + randomWord();
 			instructions.style.opacity = 1;
 		} 
